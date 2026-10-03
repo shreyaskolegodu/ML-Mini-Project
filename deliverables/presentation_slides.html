@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UE24CS352A - Machine Learning Mini-Project Presentation</title>
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+      --card-bg: rgba(22, 27, 34, 0.85);
+      --card-border: rgba(56, 139, 253, 0.25);
+      --accent-blue: #58a6ff;
+      --accent-teal: #39d353;
+      --accent-orange: #f0883e;
+      --text-main: #f0f6fc;
+      --text-muted: #8b949e;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .presentation-container {
+      width: 90vw;
+      max-width: 1100px;
+      height: 82vh;
+      position: relative;
+      perspective: 1000px;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 44px 56px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px) scale(0.98);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 40px rgba(56, 139, 253, 0.08);
+      backdrop-filter: blur(12px);
+      overflow-y: auto;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    .slide-badge {
+      display: inline-block;
+      align-self: flex-start;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent-blue);
+      background: rgba(56, 139, 253, 0.15);
+      border: 1px solid rgba(56, 139, 253, 0.3);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 14px;
+      background: linear-gradient(90deg, #ffffff, #58a6ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #ffffff;
+    }
+
+    p {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .highlight {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 10px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 10px;
+    }
+
+    .card {
+      background: rgba(13, 17, 23, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 20px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+
+    .card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+      color: var(--accent-blue);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card p {
+      font-size: 0.92rem;
+      margin-bottom: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    th {
+      background: rgba(56, 139, 253, 0.12);
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 90vw;
+      max-width: 1100px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      background: rgba(56, 139, 253, 0.15);
+      border: 1px solid rgba(56, 139, 253, 0.3);
+      color: var(--accent-blue);
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.95rem;
+    }
+
+    .btn:hover {
+      background: var(--accent-blue);
+      color: #0d1117;
+    }
+
+    .progress-bar-container {
+      flex: 1;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      margin: 0 24px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-teal));
+      transition: width 0.3s ease;
+    }
+
+    .slide-counter {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      min-width: 60px;
+      text-align: center;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .pill-green { background: rgba(57, 211, 83, 0.2); color: #39d353; }
+    .pill-orange { background: rgba(240, 136, 62, 0.2); color: #f0883e; }
+    .pill-blue { background: rgba(56, 139, 253, 0.2); color: #58a6ff; }
+  </style>
+</head>
+<body>
+
+  <div class="presentation-container">
+    <!-- SLIDE 1: Title -->
+    <div class="slide active">
+      <div class="slide-badge">UE24CS352A • Machine Learning Mini-Project</div>
+      <h1>Detecting & Predicting Earthquake Ground Motion Directionality Patterns</h1>
+      <p style="font-size: 1.2rem; color: #c9d1d9; margin-bottom: 24px;">
+        Machine Learning Tools for Spatial Seismic Hazard & RotD100 Intensity Orientation
+      </p>
+      <div class="grid-2" style="margin-top: auto;">
+        <div class="card">
+          <h3>📌 Reference Study</h3>
+          <p>Alan Poulos & Rodrigo Silva-Lopez<br/>
+          <span class="highlight">John A. Blume Earthquake Engineering Center, Stanford University</span></p>
+        </div>
+        <div class="card">
+          <h3>👥 Team Deliverables</h3>
+          <p>• Private Git Repository & Source Code<br/>
+          • Two-Page Academic Technical Write-up (PDF)<br/>
+          • Live Interactive Prediction Engine</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: Problem Statement & Motivation -->
+    <div class="slide">
+      <div class="slide-badge">Problem Definition & Motivation</div>
+      <h2>The Ground Motion Directionality Problem</h2>
+      <p>
+        Horizontal ground shaking varies with azimuth. The maximum horizontal spectral acceleration is known as <span class="highlight">RotD100</span>.
+      </p>
+      <div class="grid-2">
+        <div class="card">
+          <h3>⚠️ Current Industry Assumption</h3>
+          <p>
+            Standard building codes (ASCE 7-16) and regional risk assessments treat directionality orientations across sites as <span class="highlight">independent uniform distributions</span> over [0°, 180°).
+            <br/><br/>
+            <b>Flaw:</b> In reality, nearby sites (< 5 km) experience coherent polarized seismic wavefields. Assuming independence drastically underestimates simultaneous failure of distributed infrastructure (bridges, pipelines, power grids).
+          </p>
+        </div>
+        <div class="card">
+          <h3>🎯 Project Objective</h3>
+          <p>
+            Develop supervised ML models to predict the <span class="highlight">acute angular difference (Δθ ∈ [0°, 90°])</span> in direction of maximum shaking between any two sites <i>s<sub>i</sub></i> and <i>s<sub>j</sub></i> during earthquake <i>E<sub>k</sub></i>:
+            <br/><br/>
+            <code style="display:block; padding:8px; background:rgba(0,0,0,0.4); border-radius:6px; color:#58a6ff; font-size:1.1rem; text-align:center;">
+              Δθ(s<sub>i</sub>, s<sub>j</sub>, E<sub>k</sub>) = f(s<sub>i</sub>, s<sub>j</sub>, E<sub>k</sub>)
+            </code>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: Dataset & Engineering Features -->
+    <div class="slide">
+      <div class="slide-badge">Data Engineering</div>
+      <h2>NGA-West2 Database & Pairwise Construction</h2>
+      <div class="grid-3">
+        <div class="card">
+          <h3>1. Event Filtering</h3>
+          <p>Filtered shallow crustal records for engineering significance: <b>M<sub>w</sub> ≥ 5.0</b>, retaining ~5,000 global records.</p>
+        </div>
+        <div class="card">
+          <h3>2. Spatial Pairing</h3>
+          <p>Paired all stations recording the same earthquake with inter-site distance <b>d ≤ 5.0 km</b>, generating <b>5,300 pairs</b>.</p>
+        </div>
+        <div class="card">
+          <h3>3. Ground Truth Target</h3>
+          <p>Computed RotD100 orientations from waveforms: <b>Δθ = min(|θ<sub>i</sub> - θ<sub>j</sub>|, 180° - |θ<sub>i</sub> - θ<sub>j</sub>|)</b>.</p>
+        </div>
+      </div>
+      <div class="card" style="margin-top: 18px;">
+        <h3>📊 Initial Feature Pool (71 Candidate Attributes)</h3>
+        <p>
+          • <b>Earthquake Source:</b> M<sub>w</sub>, focal mechanism, strike, dip, rake, rupture area/length/width, hypocenter depth, ZTOR.<br/>
+          • <b>Dual-Site Geometries:</b> R<sub>epi</sub>, R<sub>hyp</sub>, R<sub>jb</sub>, R<sub>rup</sub>, inter-site Euclidean distance <i>d</i>.<br/>
+          • <b>Geotechnical Soil:</b> Shear wave velocity V<sub>s30</sub>, NEHRP classes B–E, impedance ratio.<br/>
+          • <b>Intensity Metrics:</b> Peak Ground Acceleration (PGA), PGV, PGD at each station & paired averages.
+        </p>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: Feature Selection Pipeline -->
+    <div class="slide">
+      <div class="slide-badge">Feature Selection</div>
+      <h2>Stepwise Backward-Forward Analysis</h2>
+      <p>To eliminate multicollinearity and prevent overfitting on 71 features, an iterative Ridge-based selection was deployed:</p>
+      <div class="grid-2">
+        <div class="card">
+          <h3>⏪ Stage 1: Backward Ranking</h3>
+          <p>
+            Ranks each feature by the drop in validation <i>R</i><sup>2</sup> when removed from the full model:<br/>
+            <code>ΔR² = R²<sub>base</sub> - R²<sub>without_i</sub></code><br/><br/>
+            <b>Key Result:</b> Inter-site separation distance <i>d</i> and average PGA exhibited the largest drop, confirming their physical dominance.
+          </p>
+        </div>
+        <div class="card">
+          <h3>⏩ Stage 2: Forward Selection</h3>
+          <p>
+            Sequentially adds features in ranked order until validation <i>R</i><sup>2</sup> plateaus/decreases due to overfitting.<br/><br/>
+            <b>Optimal Subset:</b> Selected <b>21 features</b> including distance <i>d</i>, average PGA, V<sub>s30</sub> mismatch, rupture length, and radiation factors.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: Machine Learning Models -->
+    <div class="slide">
+      <div class="slide-badge">Model Architecture</div>
+      <h2>Benchmarked Machine Learning Models</h2>
+      <div class="grid-3">
+        <div class="card">
+          <h3>1. Baseline Benchmark</h3>
+          <p><b>Simple Univariate OLS:</b><br/>
+          <code>Δθ = c₁ + c₂ · d</code><br/><br/>
+          Uses only inter-site distance <i>d</i>. Serves as reference for spatial decay.</p>
+        </div>
+        <div class="card">
+          <h3>2. Ridge Regression (L2)</h3>
+          <p><b>Regularized Linear Model:</b><br/>
+          <code>min ||y - Xβ||² + α||β||²</code><br/><br/>
+          Tuned on 21 selected features with optimal α = 1.5 via validation search.</p>
+        </div>
+        <div class="card">
+          <h3>3. Deep Neural Net (MLP)</h3>
+          <p><b>Non-Linear Architecture:</b><br/>
+          Deep MLP with ReLU activations, Adam optimizer, and weight decay α = 0.1.</p>
+        </div>
+      </div>
+      <div class="card" style="margin-top: 18px;">
+        <h3>🔍 Hyperparameter Grid Search (Matching Paper Figure 8)</h3>
+        <p>Explored depths from 1 to 5 hidden layers and widths from 50 to 400 neurons. Multi-layer topologies capture complex non-linear radiation directivity and site impedance contrasts.</p>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: Results & Benchmarking -->
+    <div class="slide">
+      <div class="slide-badge">Quantitative Results</div>
+      <h2>Experimental Results & Performance Comparison</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Model Architecture</th>
+            <th>Features Used</th>
+            <th>Train R²</th>
+            <th>Test R²</th>
+            <th>Test MAE</th>
+            <th>Performance Assessment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Benchmark (Distance Only)</b></td>
+            <td>1 feature (<i>d</i>)</td>
+            <td>0.038</td>
+            <td>0.051</td>
+            <td>16.43°</td>
+            <td><span class="pill pill-orange">Baseline</span></td>
+          </tr>
+          <tr>
+            <td><b>Ridge Regression (L2)</b></td>
+            <td>21 features</td>
+            <td>0.349</td>
+            <td><b>0.350</b></td>
+            <td><b>13.35°</b></td>
+            <td><span class="pill pill-green">+586% R² Boost</span></td>
+          </tr>
+          <tr>
+            <td><b>Deep Neural Network (MLP)</b></td>
+            <td>21 features</td>
+            <td>0.381</td>
+            <td><b>0.328</b></td>
+            <td><b>13.56°</b></td>
+            <td><span class="pill pill-green">Captures Non-Linearities</span></td>
+          </tr>
+          <tr>
+            <td><b>Gradient Boosted Trees</b></td>
+            <td>21 features</td>
+            <td>0.751</td>
+            <td>0.325</td>
+            <td>13.71°</td>
+            <td><span class="pill pill-blue">Ensemble Verification</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SLIDE 7: Key Physical Insights & Aleatoric Uncertainty -->
+    <div class="slide">
+      <div class="slide-badge">Physics & Discussion</div>
+      <h2>Physical Interpretation & Aleatoric Uncertainty</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>🌊 Physical Wave Trends</h3>
+          <p>
+            • <b>Distance Decay:</b> At small separation (<i>d</i> < 1 km), wavefields are coherent (Δθ ≈ 15°–20°). By <i>d</i> = 5 km, scattering decorrelates shaking toward uniform randomness (Δθ ≈ 45°).<br/><br/>
+            • <b>PGA Polarization:</b> Strong shaking (> 0.15g) is source-dominated, aligning ground motion with fault rupture and reducing Δθ.
+          </p>
+        </div>
+        <div class="card">
+          <h3>🎲 Inherent Aleatoric Uncertainty</h3>
+          <p>
+            Why is the maximum test <i>R</i><sup>2</sup> bounded around ~0.35–0.40?<br/><br/>
+            Ground shaking directionality has large <span class="highlight">aleatoric (irreducible) uncertainty</span> from 3D basin geometry, scattering, and velocity heterogeneity not measurable from surface station metadata.
+            <br/><br/>
+            <b>Crucial Success:</b> While individual pair scatter is high, the model's <b>moving average perfectly tracks true ground motion physics</b>.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: Live Demo & Code Architecture -->
+    <div class="slide">
+      <div class="slide-badge">System & Implementation</div>
+      <h2>Production Codebase & Live Demonstration</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>💻 Clean Modular Architecture</h3>
+          <p>
+            • <code>src/data_generator.py</code>: Synthetic NGA-West2 generation<br/>
+            • <code>src/feature_selection.py</code>: Backward-forward Ridge ranking<br/>
+            • <code>src/train.py</code>: Grid search hyperparameter calibration<br/>
+            • <code>src/evaluate.py</code>: Figures 2–12 & metrics generation<br/>
+            • <code>src/app.py</code>: Interactive CLI prediction engine
+          </p>
+        </div>
+        <div class="card">
+          <h3>🚀 Live Interactive Demonstration</h3>
+          <p>
+            <b>CLI Command:</b> <code>python main.py --demo</code><br/><br/>
+            Allows real-time input of:
+            <br/>• Inter-site distance (<i>d</i>)
+            <br/>• Peak Ground Acceleration (PGA)
+            <br/>• Earthquake Magnitude (<i>M<sub>w</sub></i>)
+            <br/>• Soil Shear Wave Velocity (<i>V<sub>s30</sub></i>)
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: Conclusion & Q&A -->
+    <div class="slide">
+      <div class="slide-badge">Conclusion</div>
+      <h2>Conclusions & Future Scope</h2>
+      <div class="card" style="margin-bottom: 20px;">
+        <h3>🏁 Summary of Contributions</h3>
+        <p>
+          1. Successfully reproduced and validated machine learning models for earthquake ground motion directionality.<br/>
+          2. Proved that separation distance <i>d</i> and shaking intensity (PGA) are the primary drivers of directional alignment.<br/>
+          3. Multi-variable ML drastically outperforms conventional distance decay baselines (MAE reduced from 16.4° to 13.3°).<br/>
+          4. Delivers actionable tools for resilient city-scale infrastructure design.
+        </p>
+      </div>
+      <div style="text-align: center; margin-top: 30px;">
+        <h2 style="font-size: 2.2rem; color: var(--accent-blue);">Thank You!</h2>
+        <p style="font-size: 1.1rem; color: #c9d1d9;">Open for Questions & Live Demonstration</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <button class="btn" id="prevBtn" onclick="prevSlide()">← Previous</button>
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <span class="slide-counter" id="counter">1 / 9</span>
+    <button class="btn" id="nextBtn" onclick="nextSlide()">Next →</button>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const progressBar = document.getElementById('progressBar');
+    const counter = document.getElementById('counter');
+
+    function updateSlide(index) {
+      slides.forEach((s, i) => {
+        s.classList.toggle('active', i === index);
+      });
+      progressBar.style.width = `${((index + 1) / totalSlides) * 100}%`;
+      counter.innerText = `${index + 1} / ${totalSlides}`;
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        updateSlide(currentSlide);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlide(currentSlide);
+      }
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+      else if (e.key === 'ArrowLeft') prevSlide();
+    });
+
+    updateSlide(0);
+  </script>
+</body>
+</html>
