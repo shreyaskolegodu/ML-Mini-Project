@@ -47,6 +47,11 @@ def main():
         action="store_true",
         help="Run single-point prediction with custom parameters."
     )
+    parser.add_argument(
+        "--generate-deliverables",
+        action="store_true",
+        help="Compile official 2-Page PDF Write-up and DOCX Presentation Slides deck."
+    )
     parser.add_argument("--dist", type=float, default=1.5, help="Inter-site distance in km (0 to 5 km).")
     parser.add_argument("--pga", type=float, default=0.10, help="Average Peak Ground Acceleration in g.")
     parser.add_argument("--mag", type=float, default=6.5, help="Earthquake magnitude Mw.")
@@ -82,6 +87,13 @@ def main():
         from src.app import run_interactive_demo
         print("\n>>> STEP 5: Interactive Demonstration...")
         run_interactive_demo()
+
+    if args.generate_deliverables or args.pipeline:
+        print("\n>>> STEP 6: Generating Official Deliverables (PDF Write-up & DOCX Slides)...")
+        from deliverables.generate_report import build_pdf_report
+        from deliverables.generate_slides_docx import generate_slides_docx
+        build_pdf_report()
+        generate_slides_docx()
 
     if args.predict:
         from src.app import DirectionalityPredictor

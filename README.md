@@ -30,6 +30,8 @@ $$\Delta\theta_{s_i, s_j}^k = f(s_i, s_j, E_k)$$
 ├── deliverables/
 │   ├── ML_MiniProject_Writeup.pdf     # Official Two-Page Technical Write-up (Deliverable B)
 │   ├── generate_report.py             # Automated ReportLab PDF generator script
+│   ├── presentation_slides.docx       # Full Presentation Slides in Word (.docx) format (Deliverable 4)
+│   ├── generate_slides_docx.py        # Automated python-docx presentation slides generator
 │   ├── presentation_slides.html       # Interactive web-based presentation deck (Deliverable 4)
 │   ├── PRESENTATION_SLIDES.md         # Markdown/Marp presentation slide deck
 │   ├── model_performance_table.csv    # Evaluated quantitative metrics table
@@ -160,8 +162,9 @@ Performance on the hold-out test set (10% test split, 530 unseen site pairs):
 - **Deliverable A (Source Code):** Complete, modular, documented Python repository with CLI and unit-tested pipelines.
 - **Deliverable B (Two-Page Write-up):** Compiled PDF located at `deliverables/ML_MiniProject_Writeup.pdf` satisfying all criteria in the assignment guidelines (problem statement, dataset details, approach, implementation overview, and conclusions in exactly 2 pages).
 - **Deliverable 4 (Presentation & Demonstration):**
-  - Interactive HTML slide deck located at `deliverables/presentation_slides.html` (open in any browser to present).
-  - Markdown slide deck located at `deliverables/PRESENTATION_SLIDES.md`.
+  - **Full Presentation Slides in Word (.docx)** located at [`deliverables/presentation_slides.docx`](file:///Users/shreyaskm/Documents/ML/ML%20Project/deliverables/presentation_slides.docx) with landscape slide formatting, embedded high-resolution figures, tables, and presenter notes.
+  - Interactive HTML slide deck located at [`deliverables/presentation_slides.html`](file:///Users/shreyaskm/Documents/ML/ML%20Project/deliverables/presentation_slides.html).
+  - Markdown slide deck located at [`deliverables/PRESENTATION_SLIDES.md`](file:///Users/shreyaskm/Documents/ML/ML%20Project/deliverables/PRESENTATION_SLIDES.md).
   - Interactive CLI demo executable via `python main.py --demo`.
 
 ---
