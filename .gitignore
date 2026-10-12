@@ -24,11 +24,17 @@ wheels/
 .installed.cfg
 *.egg
 
-# Data & Models cache
-data/*.csv
-models/*.joblib
-models/*.pkl
+# Generated notebook outputs
+data/
+models/
+figures/
+deliverables/model_performance_table.csv
+deliverables/results_summary.json
 
 # OS
 .DS_Store
+**/.DS_Store
 Thumbs.db
+
+# Course prompt PDF
+81965984.pdf

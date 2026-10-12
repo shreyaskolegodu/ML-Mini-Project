@@ -1,5 +1,0 @@
-Model,Train R²,Test R²,Train MAE (°),Test MAE (°),Test RMSE (°)
-Benchmark,0.0379,0.0511,15.70,16.43,19.95
-Ridge regression,0.3493,0.3496,12.80,13.35,16.52
-Neural network,0.3806,0.3282,12.48,13.56,16.79
-Gradient boosting,0.7512,0.3247,7.86,13.71,16.83
