@@ -2,6 +2,18 @@
 
 This project predicts the angular difference in maximum horizontal ground-motion orientation between two nearby earthquake recording sites. The target variable is `delta_theta`, measured in degrees and bounded between 0 and 90 degrees.
 
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Status: Complete](https://img.shields.io/badge/Status-Complete-brightgreen.svg)]()
+
+> **Course:** UE24CS352A - Machine Learning Mini-Project  
+> **Institution:** Department of Computer Science & Engineering, PES University  
+> **Reference Paper:** Alan Poulos & Rodrigo Silva-Lopez, *John A. Blume Earthquake Engineering Center, Stanford University*  
+
+### 👥 Project Team & Collaborators
+- **Shreyas K M** ([@shreyaskolegodu](https://github.com/shreyaskolegodu))
+- **Dhruvanth** ([@theDEMIGOD600](https://github.com/theDEMIGOD600) — SRN: `PES1UG24AM362`)
+
 The project implements synthetic NGA-West2-style paired-site data generation, feature selection, regression-model training, evaluation, visualization, and scenario prediction.
 
 ## Quick Start
