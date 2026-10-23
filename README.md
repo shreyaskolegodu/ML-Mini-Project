@@ -11,7 +11,7 @@ This project predicts the angular difference in maximum horizontal ground-motion
 > **Reference Paper:** Alan Poulos & Rodrigo Silva-Lopez, *John A. Blume Earthquake Engineering Center, Stanford University*  
 
 ### 👥 Project Team & Collaborators
-- **Shreyas K M** ([@shreyaskolegodu](https://github.com/shreyaskolegodu))
+- **Shreyas K M** ([@shreyaskolegodu](https://github.com/shreyaskolegodu) - SRN : `PES1UG24AM402`)
 - **Dhruvanth** ([@theDEMIGOD600](https://github.com/theDEMIGOD600) — SRN: `PES1UG24AM362`)
 
 The project implements synthetic NGA-West2-style paired-site data generation, feature selection, regression-model training, evaluation, visualization, and scenario prediction.
